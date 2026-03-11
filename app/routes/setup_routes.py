@@ -35,8 +35,10 @@ def seed_data(db: Session = Depends(get_db)):
         return {"success": False, "message": "Admin user already exists"}
 
     admin_user = User(
+        employee_id="ADMIN001",
         full_name="Admin",
         email="admin@gmail.com",
+        department="Administration",
         password=pwd_context.hash("Admin@123"[:72]),
         role_id=admin_role.id
     )

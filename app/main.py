@@ -8,7 +8,7 @@ from app.database import Base, engine
 
 import app.models  
 
-from app.routes import auth_routes, user_routes, attendance_routes, setup_routes
+from app.routes import auth_routes, user_routes, attendance_routes, setup_routes, reports_routes, leave_routes
 
 
 
@@ -31,7 +31,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://hrms-frontend-i74w.onrender.com"  
+        "https://hrms-frontend-i74w.onrender.com",
+        "http://localhost:3000"  
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -90,6 +91,8 @@ app.include_router(auth_routes.router)
 app.include_router(user_routes.router)
 app.include_router(attendance_routes.router)
 app.include_router(setup_routes.router)
+app.include_router(reports_routes.router)
+app.include_router(leave_routes.router)
 
 
 

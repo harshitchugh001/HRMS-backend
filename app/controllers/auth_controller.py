@@ -35,8 +35,10 @@ def login(data: LoginRequest, db: Session):
         "token_type": "bearer",
         "user": {
             "id": user.id,
+            "employee_id": user.employee_id,
             "email": user.email,
             "full_name": user.full_name,
+            "department": user.department,
             "role_id": user.role_id,
             "role_name": ROLE_NAMES.get(user.role_id, "Unknown"),
         },

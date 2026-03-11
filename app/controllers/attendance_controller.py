@@ -73,6 +73,34 @@ def mark_attendance(data: AttendanceCreate, db: Session):
     db.refresh(record)
     return {"success": True, "message": "Attendance marked", "data": {"id": record.id}}
 
+
+def mark_attendance_for_employee(user_id: int, data: AttendanceCreate, db: Session):
+    """Mark attendance for an employee (for HR Manager/Admin)"""
+    from app.models.user_model import User
+    
+    # Verify employee exists
+    employee = db.query(User).filter(User.id == user_id).first()
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    
+    # Check if attendance already marked
+    existing = db.query(Attendance).filter(
+        Attendance.user_id == user_id,
+        Attendance.date == data.date
+    ).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Attendance already marked for this employee on this date")
+
+    record = Attendance(
+        user_id=user_id,
+        date=data.date,
+        status=data.status
+    )
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+    return {"success": True, "message": "Attendance marked for employee", "data": {"id": record.id, "employee_id": employee.employee_id, "employee_name": employee.full_name}}
+
 def get_attendance_by_user(user_id: int, db: Session):
     records = db.query(Attendance).filter(Attendance.user_id == user_id).all()
     return {"success": True, "data": records}

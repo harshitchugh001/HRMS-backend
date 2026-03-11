@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.dependencies.auth_dependency import get_db, get_current_user, require_admin, require_manager
 from app.schemas.user_schema import UserCreate
